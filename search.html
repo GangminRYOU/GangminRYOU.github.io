@@ -11,7 +11,7 @@
 
 
 
-    <title>Author Page</title>
+    <title>Search Result</title>
     <meta name="HandheldFriendly" content="True" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Styles'n'Scripts -->
@@ -52,19 +52,19 @@
     <!-- This tag outputs SEO meta+structured data and other important settings -->
     <meta name="description" content="비전공 개발초보의 성장과정" />
     <link rel="shortcut icon" href="http://localhost:4000/assets/built/images/8120393081626675875-128.png" type="image/png" />
-    <link rel="canonical" href="http://localhost:4000/author/Yousilience/" />
+    <link rel="canonical" href="http://localhost:4000/search" />
     <meta name="referrer" content="no-referrer-when-downgrade" />
 
      <!--title below is coming from _includes/dynamic_title-->
     <meta property="og:site_name" content="DevYOU" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Author Page" />
+    <meta property="og:title" content="Search Result" />
     <meta property="og:description" content="비전공 개발초보의 성장과정" />
-    <meta property="og:url" content="http://localhost:4000/author/Yousilience/" />
+    <meta property="og:url" content="http://localhost:4000/search" />
     <meta property="og:image" content="http://localhost:4000/assets/built/images/jeremy-bishop-G9i_plbfDgk-unsplash.jpg" />
     <meta property="article:publisher" content="https://www.facebook.com/" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Author Page" />
+    <meta name="twitter:title" content="Search Result" />
     <meta name="twitter:description" content="비전공 개발초보의 성장과정" />
     <meta name="twitter:url" content="http://localhost:4000/" />
     <meta name="twitter:image" content="http://localhost:4000/assets/built/images/jeremy-bishop-G9i_plbfDgk-unsplash.jpg" />
@@ -84,7 +84,7 @@
         "name": "DevYOU",
         "logo": "http://localhost:4000/"
     },
-    "url": "http://localhost:4000/author/Yousilience/",
+    "url": "http://localhost:4000/search",
     "image": {
         "@type": "ImageObject",
         "url": "http://localhost:4000/assets/built/images/jeremy-bishop-G9i_plbfDgk-unsplash.jpg",
@@ -93,7 +93,7 @@
     },
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "http://localhost:4000/author/Yousilience/"
+        "@id": "http://localhost:4000/search"
     },
     "description": "비전공 개발초보의 성장과정"
 }
@@ -108,128 +108,124 @@
     </script> -->
 
     <meta name="generator" content="Jekyll 3.6.2" />
-    <link rel="alternate" type="application/rss+xml" title="Author Page" href="/feed.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Search Result" href="/feed.xml" />
 
 
 </head>
-<body class="author-template">
+<body class="page-template">
 
     <div class="site-wrapper">
         <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
-        <!-- < default}} -->
-<!-- The tag above means - insert everything in this file into the {body} of the default.hbs template -->
+        <!-- < default -->
+<!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template -->
 
-<!-- #author  -->
-<!-- Everything inside the #author tags pulls data from the author -->
+<!-- The big featured header, it uses blog cover image as a BG if available -->
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+        
+            
+                <a class="site-nav-logo" href="http://localhost:4000/">DevYOU</a>
+            
+        
+        
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="/">home</a></li>
+    <li class="nav-about" role="menuitem"><a href="/about/">about</a></li>
+    <li class="nav-project" role="menuitem"><a href="/tag/project/">project</a></li>
+    <li class="nav-c" role="menuitem"><a href="/tag/c/">c</a></li>
+    <li class="nav-data_structure" role="menuitem"><a href="/tag/data_structure/">data structure</a></li>
+    <li class="nav-algorithm" role="menuitem"><a href="/tag/algorithm/">algorithm</a></li>
+    <li class="nav-os" role="menuitem"><a href="/tag/os/">os</a></li>
+    <li class="nav-archive" role="menuitem">
+        <a href="/archive.html">All Posts</a>
+    </li>
+    <li class="nav-archive" role="menuitem">
+        <a href="/author_archive.html">Tag별 Posts</a>
+    </li>
+</ul>
+        
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+            
+            
+        </div>
+        
+            <a class="subscribe-button" href="#subscribe">Search</a>
+        
+    </div>
+</nav>
 
-    
+    </div>
+</header>
 
-<!-- /author -->
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
 
-<!-- The main content area -->
 <main id="site-main" class="site-main outer" role="main">
     <div class="inner">
 
-        <div class="post-feed">
-            <!-- The tag below includes the markup for each post - partials/post-card.hbs -->
+        <article class="post-full  post page no-image">
+
+            <header class="post-full-header">
+                <h1 class="post-full-title">Search Result</h1>
+            </header>
+
             
 
+            <section class="post-full-content">
+                <form action="/search" method="get" hidden="hidden">
+    <label for="search-box"></label>
+    <input type="text" id="search-box" name="query">
+</form>
 
-    <article class="post-card author-template">
-        
-            <a class="post-card-image-link" href="/write()function">
-                <div class="post-card-image" style="background-image: url(/assets/built/images/C_posts_logo_2.png)"></div>
-            </a>
-        
-        <div class="post-card-content">
-            <a class="post-card-content-link" href="/write()function">
-                <header class="post-card-header">
-                    
-                        
-                            
-                                <span class="post-card-tags">C</span>
-                            
-                        
-                    
+<ul class="mylist" id="search-results"></ul>
 
-                    <h2 class="post-card-title">write함수에 대해서</h2>
-                </header>
-                <section class="post-card-excerpt">
-                    
-                        <p>C언어 파일입출력 
+<script>
+    window.store = {
+    
+    "write-function": {
+        "title": "write함수에 대해서",
+            "author": "Yousilience",
+            "category": "",
+            "content": "C언어 파일입출력     write함수에 대해서    고수준 입출력과 저수준 입출력의 차이이 글은 C언어 시스템 호출 함수인 Write함수에 관한 글 입니다.",
+        "url": "/write()function"
+    }
+    ,
+    
+    "lowlevel-and-highlevel-io": {
+        "title": "고수준 입출력과 저수준 입출력의 차이",
+            "author": "Yousilience",
+            "category": "",
+            "content": "C언어 파일입출력     write함수에 대해서    고수준 입출력과 저수준 입출력의 차이이 글은 고수준 입출력과 저수준 입출력의 차이에 관한 글 입니다.int main(void){    printf(\"Hello World\");    return 0;}",
+        "url": "/lowlevel_and_highlevel_io"
+    }
+    
+    
+    };
+</script>
+<script src="assets/js/lunr.js"></script>
+<script src="assets/js/search.js"></script>
+            </section>
 
-    write함수에 대해서
-    고수준 입출력과 저수준 입출력의 차이
-
-
-</p>
-                    
-                </section>
-            </a>
-            <footer class="post-card-meta">
-                
-                    
-                
-                <span class="reading-time">
-                    
-                    
-                      1 min read
-                    
-                </span>
-            </footer>
-        </div>
-    </article>
-
-    <article class="post-card author-template">
-        
-            <a class="post-card-image-link" href="/lowlevel_and_highlevel_io">
-                <div class="post-card-image" style="background-image: url(/assets/built/images/C_posts_logo_2.png)"></div>
-            </a>
-        
-        <div class="post-card-content">
-            <a class="post-card-content-link" href="/lowlevel_and_highlevel_io">
-                <header class="post-card-header">
-                    
-                        
-                            
-                                <span class="post-card-tags">C</span>
-                            
-                        
-                    
-
-                    <h2 class="post-card-title">고수준 입출력과 저수준 입출력의 차이</h2>
-                </header>
-                <section class="post-card-excerpt">
-                    
-                        <p>C언어 파일입출력 
-
-    write함수에 대해서
-    고수준 입출력과 저수준 입출력의 차이
-
-
-</p>
-                    
-                </section>
-            </a>
-            <footer class="post-card-meta">
-                
-                    
-                
-                <span class="reading-time">
-                    
-                    
-                      1 min read
-                    
-                </span>
-            </footer>
-        </div>
-    </article>
-
-
-        </div>
+        </article>
 
     </div>
 </main>
+
+<!-- /post -->
+
+<!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs -->
+<script>
+$(function() {
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+});
+</script>
+
 
 
         <!-- Previous/next page links - displayed on every page -->
@@ -307,7 +303,7 @@
     <!-- Paginator increased to "infinit" in _config.yml -->
     <!-- if paginator.posts  -->
     <!-- <script>
-        var maxPages = parseInt('1');
+        var maxPages = parseInt('');
     </script>
     <script src="/assets/js/infinitescroll.js"></script> -->
     <!-- /endif -->
@@ -330,6 +326,14 @@
 
 
     <!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. -->
+    
+        <script>
+$(function() {
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+});
+</script>
+
     
 
     <!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag -->
