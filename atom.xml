@@ -4,15 +4,15 @@
     <title> - Articles</title>
     <description>비전공 개발초보의 성장과정</description>
     <link>
-    http://localhost:4000</link>
+    https://gangminryou.github.io</link>
     
       
       <item>
-        <title>write함수에 대해서</title>
+        <title>저수준 파일 입출력함수 - open()</title>
         
           <description>&lt;p&gt;&lt;span class=&quot;table-of-contents-list&quot;&gt;C언어 파일입출력 &lt;/span&gt;&lt;/p&gt;
 &lt;ul class=&quot;table-of-contents-list&quot;&gt;
-    &lt;li&gt;&lt;a href=&quot;./write()function&quot;&gt;write함수에 대해서&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;./lowlevel_io_open&quot;&gt;저수준 입출력 함수 - open()&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;./lowlevel_and_highlevel_io&quot;&gt;고수준 입출력과 저수준 입출력의 차이&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -20,8 +20,8 @@
         
         <pubDate>Sun, 12 Feb 2023 01:40:00 +0900</pubDate>
         <link>
-        http://localhost:4000/write()function</link>
-        <guid isPermaLink="true">http://localhost:4000/write()function</guid>
+        https://gangminryou.github.io/lowlevel_io_open</link>
+        <guid isPermaLink="true">https://gangminryou.github.io/lowlevel_io_open</guid>
       </item>
       
     
@@ -31,7 +31,7 @@
         
           <description>&lt;p&gt;&lt;span class=&quot;table-of-contents-list&quot;&gt;C언어 파일입출력 &lt;/span&gt;&lt;/p&gt;
 &lt;ul class=&quot;table-of-contents-list&quot;&gt;
-    &lt;li&gt;&lt;a href=&quot;./write()function&quot;&gt;write함수에 대해서&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;./lowlevel_io_open&quot;&gt;저수준 입출력 함수 - open()&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;./lowlevel_and_highlevel_io&quot;&gt;고수준 입출력과 저수준 입출력의 차이&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -39,8 +39,8 @@
         
         <pubDate>Sun, 12 Feb 2023 01:40:00 +0900</pubDate>
         <link>
-        http://localhost:4000/lowlevel_and_highlevel_io</link>
-        <guid isPermaLink="true">http://localhost:4000/lowlevel_and_highlevel_io</guid>
+        https://gangminryou.github.io/lowlevel_and_highlevel_io</link>
+        <guid isPermaLink="true">https://gangminryou.github.io/lowlevel_and_highlevel_io</guid>
       </item>
       
     

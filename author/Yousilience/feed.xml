@@ -2,10 +2,10 @@
 
 <feed xmlns="http://www.w3.org/2005/Atom" >
   <generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator>
-  <link href="http://localhost:4000/author/Yousilience/feed.xml" rel="self" type="application/atom+xml" />
-  <link href="http://localhost:4000/" rel="alternate" type="text/html" />
-  <updated>2023-02-14T12:53:46+09:00</updated>
-  <id>http://localhost:4000/author/Yousilience/feed.xml</id>
+  <link href="https://gangminryou.github.io/author/Yousilience/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="https://gangminryou.github.io/" rel="alternate" type="text/html" />
+  <updated>2023-02-26T17:54:39+09:00</updated>
+  <id>https://gangminryou.github.io/author/Yousilience/feed.xml</id>
 
   
   
@@ -32,173 +32,155 @@
 
   
     <entry>
-      <title type="html">write함수에 대해서</title>
-      <link href="http://localhost:4000/write()function" rel="alternate" type="text/html" title="write함수에 대해서" />
+      <title type="html">저수준 파일 입출력함수 - open()</title>
+      <link href="https://gangminryou.github.io/lowlevel_io_open" rel="alternate" type="text/html" title="저수준 파일 입출력함수 - open()" />
       <published>2023-02-12T01:40:00+09:00</published>
       <updated>2023-02-12T01:40:00+09:00</updated>
-      <id>http://localhost:4000/write()function</id>
-      <content type="html" xml:base="http://localhost:4000/write()function">&lt;p&gt;&lt;span class=&quot;table-of-contents-list&quot;&gt;C언어 파일입출력 &lt;/span&gt;&lt;/p&gt;
+      <id>https://gangminryou.github.io/lowlevel_io_open</id>
+      <content type="html" xml:base="https://gangminryou.github.io/lowlevel_io_open">&lt;p&gt;&lt;span class=&quot;table-of-contents-list&quot;&gt;C언어 파일입출력 &lt;/span&gt;&lt;/p&gt;
 &lt;ul class=&quot;table-of-contents-list&quot;&gt;
-    &lt;li&gt;&lt;a href=&quot;./write()function&quot;&gt;write함수에 대해서&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;./lowlevel_io_open&quot;&gt;저수준 입출력 함수 - open()&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;./lowlevel_and_highlevel_io&quot;&gt;고수준 입출력과 저수준 입출력의 차이&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;이 글은 C언어 시스템 호출 함수인 Write함수에 관한 글 입니다.&lt;/p&gt;
+&lt;h1 id=&quot;글을-쓰는-이유&quot;&gt;&lt;strong&gt;글을 쓰는 이유&lt;/strong&gt;&lt;/h1&gt;
 
-&lt;noscript&gt;&lt;pre&gt;# Jekyll configuration
-markdown: kramdown
-# kramdown : markdown의 개조판.
-# markdown에서 불편한 사항을 개선한 형태.
+&lt;p&gt;42서울 라피신을 진행하는 동안, 정말 많이 사용했던 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;write()함수&lt;/code&gt;, 그리고 이외에 파일 입출력을 위해 사용되는 저수준 입출력 함수인 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;open()함수&lt;/code&gt;와 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;read()함수&lt;/code&gt;에 대해 정리보고 싶어 이번 포스팅을 작성하게 되었습니다.&lt;/p&gt;
 
-# MyData
-owner:
-  name:           Yousilience
-  avatar:         photo.jpg #내 사진을 지정하는 것 파일 명만 넣으면됨, 파일경로는 나중에
-  bio:            &amp;quot;Bachelors in IB&amp;quot;
-  email:          dbrkdals1994@gmail.com
-  # Social networking links used in footer. Update and remove as you like.
-  twitter:
-  facebook:
-  github:
-  stackexchange:
-  linkedin:
-  instagram:
-  flickr:
-  tumblr:
-  # google plus id, include the &amp;#39;+&amp;#39;, eg +mmistakes
-  google_plus:
+&lt;p&gt;컴퓨터는 File이라는 단위를 사용해서 HardWare에 데이터를 저장하죠! 그래서, 파일에 쓰거나, 파일을 읽는 형태로 데이터를 입출력하게 되는데요! C언어에서는 대표적인 경우로 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fopen()&lt;/code&gt;가 있습니다. 하지만, 오늘 알아볼 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;open()함수&lt;/code&gt;는 앞서 말했던 고수준 입출력 함수인 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fopen()&lt;/code&gt;과 달리 &lt;strong&gt;System Call&lt;/strong&gt;을 하는 저수준 입출력 함수입니다.&lt;/p&gt;
 
-highlighter: rouge
-# text highlighter로 rouge이용
-# 2016.02월 이후로 syntax highlighter는 rouge만 지원.
-# Pygments 사용불가.
+&lt;h2 id=&quot;open함수의-원형&quot;&gt;&lt;strong&gt;open()함수의 원형&lt;/strong&gt;&lt;/h2&gt;
 
-paginate: 10
-# 작성한 모든 post를 하나의 페이지에 열거할 수 없으니
-# pagination이 필요하고 몇개의 post를 하나의 page에서
-# 보여줄 건지를 설정.
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;open()함수&lt;/code&gt;의 원형은 다음과 같습니다.&lt;/p&gt;
 
-language: &amp;#39;en-uk&amp;#39;
-# 언어 설정
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;fcntl.h&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filepath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filepath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mode_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;open()함수&lt;/code&gt;는 C POSIX 라이브러리중 하나인 fcntl.h 라이브러리를 include하면 사용할 수 있습니다. 그럼 한번 매개변수부터 하나씩 뜯어 볼까요??&lt;/p&gt;
 
-url: https://GangminRYOU.github.io
-# Google Search Console에서 사용하는 sitemap.xml 생성시
-# 이 url key값이 존재하지 않으면 sitemap.xml이
-# 정상적으로 생성되지 않는다.
-# 또한 disqus(댓글시스템)를 이용하기 위해서도 필요.
-# 자신의 github page url을 입력
-# ( https://your_github_id.github.io 형식 )
+&lt;h2 id=&quot;매개변수&quot;&gt;&lt;strong&gt;매개변수&lt;/strong&gt;&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;우선, 첫 번째 매개변수의 경우, 열거나 생성하고자 하는 파일의 경로의 문자배열을 명시해야 합니다.
+    &lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;./test.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O_RDWR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;이런 방식으로 첫번째 매개변수에 &lt;em&gt;상대경로&lt;/em&gt; 또는 &lt;em&gt;절대경로&lt;/em&gt;를 명시해주면, 해당 경로에 있는 파일을 읽거나 쓰고, 생성하게 됩니다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;두번쨰 매개변수의 경우, int값을 받는데 이것은 fopen함수에서 “r”, “w”와 같이 파일을 열 목적을 명시해 주어야 하죠.
+    &lt;ul&gt;
+      &lt;li&gt;이 목적의 경우, 여러가지 옵션을 사용할 수 있는데, 다음과 같습니다.
+        &lt;ul&gt;
+          &lt;li&gt;&lt;strong&gt;O_RDONLY&lt;/strong&gt; : 읽기 모드 (Read Only)&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;O_WRONLY&lt;/strong&gt; : 쓰기 모드 (Write Only)&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;O_RDWR&lt;/strong&gt; : 읽기/쓰기 모드&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;O_CREAT&lt;/strong&gt; : 파일 생성&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;O_APPEND&lt;/strong&gt; : 파일을 쓰되 기존 파일의 맨 끝부터 이어 쓰는 기능&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;O_TRUNC&lt;/strong&gt; : 파일을 초기화&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;O_EXCL&lt;/strong&gt; : O_CREAT 와 함께 사용되며, 이미 파일이 존재한다면 에러를 리턴&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;그런데, open()함수의 원형을 보면, 인자가 2개인 경우가 있도 있고, 3개인 경우도 있습니다.&lt;/p&gt;
 
-baseurl: /
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;이는, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O_CREAT옵션&lt;/code&gt; flag와 관련이 있는데요! 일반적으로 LINUX운영 체제에서 파일이나 디렉토리를 생성하면, 파일 소유자, 그룹, others의 권한이 설정이 되어있는데, &lt;strong&gt;권한&lt;/strong&gt;이라는 것은 운영체제 입장에서 매우 중요하기 때문에 반드시 설정 해주어야 하죠!&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;그래서 파일을 생성하는 경우에는, 00777(-rwxrwxrwx)와 같이 Octal modes나 인자 옵션을 사용해 명시해주어야 합니다.&lt;/li&gt;
+      &lt;li&gt;인자 옵션
+        &lt;ul&gt;
+          &lt;li&gt;S_IRWXU        파일 소유주에게 읽기, 쓰기, 실행 권한을 설정.&lt;/li&gt;
+          &lt;li&gt;S_IRUSR        파일 소유주에게 읽기 권한을 설정.&lt;/li&gt;
+          &lt;li&gt;S_IWUSR        파일 소유주에게 쓰기 권한을 설정.&lt;/li&gt;
+          &lt;li&gt;S_IXUSR        파일 소유주에게 실행 권을을 설정.&lt;/li&gt;
+          &lt;li&gt;S_IRWXG        파일 그룹에게 읽기, 쓰기, 실행 권한을 설정.&lt;/li&gt;
+          &lt;li&gt;S_IRGRP        파일 그룹에게 읽기 권한을 설정.&lt;/li&gt;
+          &lt;li&gt;S_IWGRP        파일 그룹에게 쓰기 권한을 설정.&lt;/li&gt;
+          &lt;li&gt;S_IXGRP        파일 그룹에게 실행 권한을 설정.&lt;/li&gt;
+          &lt;li&gt;S_IRWXO        다른 사용자에게 읽기, 쓰기, 실행 권한을 설정.&lt;/li&gt;
+          &lt;li&gt;S_ROTH        다른 사용자에게 읽기 권한을 설정.&lt;/li&gt;
+          &lt;li&gt;S_WOTH        다른 사용자에게 쓰기 권한을 설정.&lt;/li&gt;
+          &lt;li&gt;S_XOTH        다른 사용자에게 실행 권한을 설정&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
 
-# Website info
-title: DevYOU
-# 자신의 blog title.
+&lt;h2 id=&quot;반환값&quot;&gt;&lt;strong&gt;반환값&lt;/strong&gt;&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;open()함수&lt;/code&gt;는 결과적으로 프로세스의 열려있는 file의 inode값을 가리키는 fd값을 반환하게 됩니다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;기본적으로 Shell은 항상 열려있는 파일이 3가지 있는데요.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;바로 &lt;strong&gt;stdin, stdout, stderr&lt;/strong&gt;입니다. 이에 대한 fd값은 각각, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0, 1, 2&lt;/code&gt;이구요!&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;만약 이 3가지 파일 이외에, 사용자가 새로 파일을 열 경우, fd값은 3부터 배정되게 됩니다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;아래의 코드를 보시면 각각의 반환되는 fd값을 통해 표준 입출력,에러를 제외한 숫자부터 반환이 되는 것을 볼수 있습니다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
-description: 비전공 개발초보의 성장과정
-# blog home에 표시될 blog에 대한 전반적인 설명.
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;fcntl.h&amp;gt;
+#include &amp;lt;unistd.h&amp;gt;
+#include &amp;lt;stdio.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;fd1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;./test1.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O_CREAT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mo&quot;&gt;00700&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;%d&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;fd2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;./test2.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O_CREAT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mo&quot;&gt;00700&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;%d&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;fd3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;./test3.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O_CREAT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mo&quot;&gt;00700&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;%d&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-cover: assets/built/images/jeremy-bishop-G9i_plbfDgk-unsplash.jpg
-# blog home에 표시될 blog cover image.
+&lt;p&gt;이 fd값을 이용해서 우리는 write든 read든 fd값이 가리키고 있는 inode에 해당하는 파일에 대한 입출력을 할 수 있게 됩니다.&lt;/p&gt;
 
-logo:
-logo_dark:
+&lt;p&gt;fd에 대해 더 궁금한게 있으신 분들은 이 블로그의 링크를 참조하시면 좋을거 같습니다!&lt;/p&gt;
 
-favicon: assets/built/images/8120393081626675875-128.png
-# favicon으로 사용할 image
+&lt;p&gt;fd 관련 아티클 : &lt;a href=&quot;http://webs.co.kr/index.php?mid=linux_1&amp;amp;document_srl=3319992#:~:text=유닉스&quot;&gt;http://webs.co.kr/index.php?mid=linux_1&amp;amp;document_srl=3319992#:~:text=유닉스&lt;/a&gt;&lt;/p&gt;
 
-production_url: https://GangminRYOU.github.io/
-# 최종적으로 blog가 운영될 url
+&lt;h2 id=&quot;사용사례&quot;&gt;&lt;strong&gt;사용사례&lt;/strong&gt;&lt;/h2&gt;
+&lt;hr /&gt;
+&lt;p&gt;마지막으로, open()함수를 사용해서 간단한 파일 작성으로 글을 마무리 하겠습니다.&lt;/p&gt;
 
-source_url:
-# blogmaker(jekyll source folder)에 대한 github repository
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;unistd.h&amp;gt;
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;fcntl.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;openfunc.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O_CREAT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mo&quot;&gt;0777&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;%d&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;openfunc.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;O_RDWR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Hello World!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/GangminRYOU/GangminRYOU.github.io.git/assets/built/images/open_RDWR.png&quot; alt=&quot;반환값&quot; /&gt;&lt;/p&gt;
 
-# Social info
-navigation: True
-# Navigation bar link를 보여줄건지 여부
+&lt;p&gt;이렇게 open()함수를 사용해서 파일을 생성하고, 다시 파일을 읽기, 쓰기 모드로 열어 값을 입력했습니다.&lt;/p&gt;
 
-subscribers: True
-# subscriber 기능을 사용할건지의 여부
-# 저는 약간의 수정을 통해 subscriber 기능대신
-# lunr.js를 이용한 검색 기능으로 대체 사용했습니다.
-# 검색기능으로 대체하기 위해서
-# `_includes/subscribe-form.html` 파일의 수정이 필요합니다.
+&lt;p&gt;다른 옵션을 보면, 알수 있듯이 O_CREAT옵션의 경우 파일을 생성하는 목적으로 open함수를 사용했기 때문에, READ나 WRITE와 같은 다른 목적을 위해서 파일에 접근할 때는 O_RDWR등의 읽기, 쓰기 목적의 flag를 함수에 줬을 때 가능합니다.&lt;/p&gt;
 
-twitter:
-facebook:
-# 만약 twitter와 facebook을 이용하면 username을 입력
-
-# Disqus
-disqus: True
-disqus_shortname: xxxxxxxx
-# disqus는 온라인 댓글 시스템. 댓글 기능을 사용하기 위해
-# disqus를 이용할 것인지 여부와 만약 사용하면
-# disqus shortname을 입력 ( disqus username이 아님 )
-
-
-# Google Analytics
-google_analytics: UA-xxxxxxxx-x # replace with your GA tracking identifier
-# Google Analytics을 사용할 경우 GA tracking identifier를 입력
-
-# Permalinks
-permalink: /:title
-# permalink: /author/:author
-# permalink: /tag/:title
-# 각각의 post에 고정주소를 어떤 방식으로 할당할 것인지를 결정
-# 이 값을 바꾸면 작성한 포스트의 저장위치나 파일이름이 변경된다.
-
-# gems and other configs
-plugins: [jekyll-paginate, jekyll-feed, jekyll-gist]
-
-feed:
-  path: feed.xml
-
-# Travis-CI 설정입니다.
-safe: False
-lsi: False
-
-username: moon9342
-repo: GitHubPageMaker
-# username : travis-ci와 연동하는 github의 username
-# repo: travis-ci와 연동하는 github의 repository이름
-# https://github.com/&amp;lt;username&amp;gt;/&amp;lt;repository&amp;gt;
-
-branch: master
-# 사용할 branch명
-
-relative_source:
-
-destination: ../[GitHubPage]/
-# compile된 결과가 생성되는 폴더
-# 이 폴더안의 내용이 우리가 운영하는 블로그 내용이 컴파일되서 들어간다.
-# 이 폴더안의 내용을 github repository(https://username.github.io)에 push
-# 만약 Travis-CI를 이용할 예정이면 이 부분을 git submodule로
-# github repository(https://username.github.io)에 연결해야 한다.
-
-
-# exclude는 Jekyll컴파일 시 destination에 포함될 필요가
-# 없는것들을 명시한다. (node_modules와 필요없는 것들은 제외)
-exclude:
-  - README.md
-  - Rakefile
-  - Gemfile
-  - Gemfile.lock
-  - changelog.md
-  - &amp;quot;*.Rmd&amp;quot;
-  - vendor
-  - .travis.yml
-  - node_modules
-  - assets/css
-  - assets/images
-  #- _posts/angular
-  - _posts/et-cetera
-  #- _posts/python
-  #- _posts/typescript
-  #  - _posts/jekyll
-  - _posts/iot
-  - _posts/r
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/GangminRYOU/2bd2f7367a71601e37f494b87ffb6e3a.js&quot;&gt; &lt;/script&gt;</content>
+&lt;p&gt;다음 포스팅은 저수준 파일 입출력 함수인 Read()와 write()함수로 돌아오겠습니다!&lt;/p&gt;</content>
 
       
       
@@ -219,7 +201,7 @@ exclude:
       
 
       
-        <summary type="html">C언어 파일입출력 write함수에 대해서 고수준 입출력과 저수준 입출력의 차이</summary>
+        <summary type="html">C언어 파일입출력 저수준 입출력 함수 - open() 고수준 입출력과 저수준 입출력의 차이</summary>
       
 
       
@@ -228,13 +210,13 @@ exclude:
   
     <entry>
       <title type="html">고수준 입출력과 저수준 입출력의 차이</title>
-      <link href="http://localhost:4000/lowlevel_and_highlevel_io" rel="alternate" type="text/html" title="고수준 입출력과 저수준 입출력의 차이" />
+      <link href="https://gangminryou.github.io/lowlevel_and_highlevel_io" rel="alternate" type="text/html" title="고수준 입출력과 저수준 입출력의 차이" />
       <published>2023-02-12T01:40:00+09:00</published>
       <updated>2023-02-12T01:40:00+09:00</updated>
-      <id>http://localhost:4000/lowlevel_and_highlevel_io</id>
-      <content type="html" xml:base="http://localhost:4000/lowlevel_and_highlevel_io">&lt;p&gt;&lt;span class=&quot;table-of-contents-list&quot;&gt;C언어 파일입출력 &lt;/span&gt;&lt;/p&gt;
+      <id>https://gangminryou.github.io/lowlevel_and_highlevel_io</id>
+      <content type="html" xml:base="https://gangminryou.github.io/lowlevel_and_highlevel_io">&lt;p&gt;&lt;span class=&quot;table-of-contents-list&quot;&gt;C언어 파일입출력 &lt;/span&gt;&lt;/p&gt;
 &lt;ul class=&quot;table-of-contents-list&quot;&gt;
-    &lt;li&gt;&lt;a href=&quot;./write()function&quot;&gt;write함수에 대해서&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;./lowlevel_io_open&quot;&gt;저수준 입출력 함수 - open()&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;./lowlevel_and_highlevel_io&quot;&gt;고수준 입출력과 저수준 입출력의 차이&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -265,7 +247,7 @@ exclude:
       
 
       
-        <summary type="html">C언어 파일입출력 write함수에 대해서 고수준 입출력과 저수준 입출력의 차이</summary>
+        <summary type="html">C언어 파일입출력 저수준 입출력 함수 - open() 고수준 입출력과 저수준 입출력의 차이</summary>
       
 
       
